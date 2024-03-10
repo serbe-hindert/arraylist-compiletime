@@ -42,7 +42,7 @@
  */
 #define ARRAYLIST_HEAP_DESTROY_FUNCTION(type) \
     /** destroy a type## arraylist that was properly allocated on the heap */ \
-    void type##ArrayList_heapDestroy(type##ArrayList* list) { \
+    void type##ArrayList_heapDestroy(type##ArrayList* restrict list) { \
         free(list->elements); \
         free(list); \
     }
@@ -63,7 +63,7 @@ ARRAYLIST_HEAP_DESTROY_FUNCTION(type)
  */
 #define ARRAYLIST_STACK_CREATE_FUNCTION(type) \
     /** configure a type## arraylist that has been created on the stack */ \
-    bool type##ArrayList_stackCreate(type##ArrayList* list, size_t initialCapacity) { \
+    bool type##ArrayList_stackCreate(type##ArrayList* restrict list, size_t initialCapacity) { \
         list->maximum = initialCapacity; \
         list->current = 0; \
         list->elements = malloc(list->maximum * sizeof(type)); \
@@ -75,7 +75,7 @@ ARRAYLIST_HEAP_DESTROY_FUNCTION(type)
  */
 #define ARRAYLIST_STACK_DESTROY_FUNCTION(type) \
     /** destroy a type## arraylist that has been allocated on the stack */ \
-    void type##ArrayList_stackDestroy(type##ArrayList* list) { \
+    void type##ArrayList_stackDestroy(type##ArrayList* restrict list) { \
         free(list->elements); \
     }
 /**
@@ -95,7 +95,7 @@ ARRAYLIST_STACK_DESTROY_FUNCTION(type)
  */
 #define ARRAYLIST_MISC_INSERT_FUNCTION(type) \
     /** insert a value into an type## arraylist */ \
-    bool type##ArrayList_insert(type##ArrayList* list, type value) { \
+    bool type##ArrayList_insert(type##ArrayList* restrict list, type value) { \
         if (list->current == list->maximum) { \
             list->maximum *= 2; \
             list->elements = realloc(list->elements, list->maximum * sizeof(type)); \
@@ -114,7 +114,7 @@ ARRAYLIST_STACK_DESTROY_FUNCTION(type)
  */
 #define ARRAYLIST_MISC_SET_FUNCTION(type) \
     /** set a value in a type## arraylist */ \
-    bool type##ArrayList_set(type##ArrayList* list, size_t index, type value) { \
+    bool type##ArrayList_set(type##ArrayList* restrict list, size_t index, type value) { \
         if (index < list->current) { \
             return false; \
         } \
@@ -129,7 +129,7 @@ ARRAYLIST_STACK_DESTROY_FUNCTION(type)
  */
 #define ARRAYLIST_MISC_GET_FUNCTION(type) \
     /** get a value from a type## arraylist */ \
-    type type##ArrayList_get(type##ArrayList* list, size_t index) { \
+    type type##ArrayList_get(type##ArrayList* restrict list, size_t index) { \
         if (index >= list->current) { \
             return NULL; \
         } \
@@ -143,7 +143,7 @@ ARRAYLIST_STACK_DESTROY_FUNCTION(type)
  */
 #define ARRAYLIST_MISC_DELETE_FUNCTION(type) \
     /** delete a value from a type## arraylist */ \
-    bool type##ArrayList_delete(type##ArrayList* list, size_t index) { \
+    bool type##ArrayList_delete(type##ArrayList* restrict list, size_t index) { \
         if (index >= list->current) { \
             return false; \
         } \
@@ -165,7 +165,7 @@ ARRAYLIST_STACK_DESTROY_FUNCTION(type)
  */
 #define ARRAYLIST_MISC_FAST_DELETE_FUNCTION(type) \
     /** delete a value from a type## arraylist by overwriting it with the last value */ \
-    bool type##ArrayList_fastDelete(type##ArrayList* list, size_t index) { \
+    bool type##ArrayList_fastDelete(type##ArrayList* restrict list, size_t index) { \
         if (index >= list->current) { \
             return false; \
         } \
@@ -181,7 +181,7 @@ ARRAYLIST_STACK_DESTROY_FUNCTION(type)
  */
 #define ARRAYLIST_MISC_CONTAINS_FUNCTION(type) \
     /** check if a value exists inside a type## arraylist */ \
-    bool type##ArrayList_contains(type##ArrayList* list, type value) { \
+    bool type##ArrayList_contains(type##ArrayList* restrict list, type value) { \
         for (size_t i = 0; i < list->current; i++) { \
             if (value == list->elements[i]) { \
                 return true; \
